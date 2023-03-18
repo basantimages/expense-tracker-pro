@@ -1,10 +1,11 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TableCell, TableRow, Button } from "@mui/material";
 import { modalActions } from "../store/modal-slice";
 import { expenseActions } from "../store/expense-slice";
 
 const ExpenseDetail = (props) => {
   const dispatch = useDispatch();
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
 
   function editHandler() {
     dispatch(modalActions.addExpenseHandler());
@@ -23,11 +24,16 @@ const ExpenseDetail = (props) => {
     dispatch(expenseActions.removeExpense(props.id));
   }
 
+  let textColor = "initial";
+  if (isDarkThemeEnabled) {
+    textColor = "white";
+  }
+
   return (
     <TableRow>
-      <TableCell>{props.description}</TableCell>
-      <TableCell>{props.amount}</TableCell>
-      <TableCell>{props.category}</TableCell>
+      <TableCell sx={{ color: textColor }}>{props.description}</TableCell>
+      <TableCell sx={{ color: textColor }}>{props.amount}</TableCell>
+      <TableCell sx={{ color: textColor }}>{props.category}</TableCell>
       <TableCell
         sx={{
           textAlign: "center",

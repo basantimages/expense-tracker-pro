@@ -7,7 +7,14 @@ import Buttons from "./Buttons";
 const Header = () => {
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: "#002333" }}>
+      <AppBar
+        position="static"
+        sx={{
+          bgcolor: "rgba(0, 0, 0, 0.8)",
+          borderBottom: "2px solid black",
+          boxShadow: "0 5px 10px grey",
+        }}
+      >
         <Toolbar>
           <Typography variant="h5" component="h1" color="inherit" fontWeight="bold">
             Expense Tracker

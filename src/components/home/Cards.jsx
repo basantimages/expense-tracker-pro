@@ -15,12 +15,37 @@ import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import { expenseActions } from "../store/expense-slice";
+import XLSX from "sheetjs-style";
+import * as FileSaver from "file-saver";
+
+//! Function to download excel sheet
+function exportToExcel(expenses) {
+  let excelData = [];
+
+  //? To print, we need an array of objects
+  for (const key in expenses) {
+    excelData.push(expenses[key]);
+  }
+
+  const fileTyle =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+  const dateTime = new Date().toLocaleString();
+
+  const ws = XLSX.utils.json_to_sheet(excelData);
+  const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const data = new Blob([excelBuffer], { type: fileTyle });
+
+  //? Actual object to download sheet
+  FileSaver.saveAs(data, "Expenses - " + dateTime + ".xlsx");
+}
 
 const Cards = () => {
   const dispatch = useDispatch();
   const totalExpenses = useSelector((state) => state.expenses.totalExpenses);
   const isProUser = useSelector((state) => state.expenses.isProUser);
   const expenses = useSelector((state) => state.expenses.expenses);
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
 
   function showPopUp() {
     dispatch(modalActions.addExpenseHandler());
@@ -28,6 +53,13 @@ const Cards = () => {
 
   function activateMembership() {
     dispatch(expenseActions.activatePro());
+  }
+
+  let bgColor = "initial";
+  let textColor = "initial";
+  if (isDarkThemeEnabled) {
+    bgColor = "rgba(0, 0, 0, 0.5)";
+    textColor = "white";
   }
 
   let card4Heading = "",
@@ -88,7 +120,9 @@ const Cards = () => {
         size="medium"
         sx={{ mt: "2rem", color: "lime" }}
         disabled={!Object.keys(expenses).length}
-        // onClick={}
+        onClick={() => {
+          exportToExcel(expenses);
+        }}
       >
         Excel
       </Button>
@@ -106,6 +140,8 @@ const Cards = () => {
                 boxShadow: "0 0 15px grey",
                 p: "1rem",
                 height: "8rem",
+                bgcolor: bgColor,
+                color: textColor,
               }}
             >
               <Typography variant="body1" color="grey" fontWeight="bold">
@@ -137,6 +173,7 @@ const Cards = () => {
                 boxShadow: "0 0 15px grey",
                 p: "1rem",
                 height: "8rem",
+                bgcolor: bgColor,
               }}
             >
               <Typography variant="body1" color="grey" fontWeight="bold">
@@ -170,6 +207,8 @@ const Cards = () => {
                 boxShadow: "0 0 15px grey",
                 p: "1rem",
                 height: "8rem",
+                bgcolor: bgColor,
+                color: textColor,
               }}
             >
               <Typography variant="body1" color="grey" fontWeight="bold">
@@ -201,6 +240,8 @@ const Cards = () => {
                 boxShadow: "0 0 15px grey",
                 p: "1rem",
                 height: "8rem",
+                bgcolor: bgColor,
+                color: textColor,
               }}
             >
               <Typography variant="body1" color="grey" fontWeight="bold">

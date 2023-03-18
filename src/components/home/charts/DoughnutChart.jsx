@@ -5,23 +5,10 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const doughnutOptions = {
-  maintainAspectRatio: false,
-  cutout: 88,
-  plugins: {
-    legend: {
-      position: "bottom",
-    },
-    title: {
-      display: true,
-      text: "Category wise Expenses",
-    },
-  },
-};
-
 const DoughnutChart = ({ year }) => {
   const [categoryWiseExpenses, setCategoryWiseExpenses] = useState([]);
   const expenses = useSelector((state) => state.expenses.expenses);
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
 
   useEffect(() => {
     let food = 0,
@@ -50,6 +37,13 @@ const DoughnutChart = ({ year }) => {
     setCategoryWiseExpenses([food, clothes, fuel]);
   }, [expenses, year]);
 
+  let bgColor = "initial";
+  let textColor = "initial";
+  if (isDarkThemeEnabled) {
+    bgColor = "rgba(0, 0, 0, 0.5)";
+    textColor = "white";
+  }
+
   const doughnutData = {
     labels: ["food", "clothes", "fuel"],
     datasets: [
@@ -67,6 +61,21 @@ const DoughnutChart = ({ year }) => {
     ],
   };
 
+  const doughnutOptions = {
+    maintainAspectRatio: false,
+    cutout: 88,
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        text: "Category wise Expenses",
+        color: textColor,
+      },
+    },
+  };
+
   return (
     <Grid item xs={12} md={4}>
       <Card
@@ -77,6 +86,8 @@ const DoughnutChart = ({ year }) => {
           height: "18rem",
           display: "flex",
           justifyContent: "center",
+          bgcolor: bgColor,
+          color: textColor,
         }}
       >
         <Doughnut options={doughnutOptions} data={doughnutData} />

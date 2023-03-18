@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loginOnLoad } from "./components/store/auth-thunks";
 import { getData, putData } from "./components/store/expense-thunks";
+import { Box } from "@mui/material";
 
 let firstRender = true;
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
   const expenses = useSelector((state) => state.expenses);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,8 +41,13 @@ function App() {
     // eslint-disable-next-line
   }, [expenses]);
 
+  let color = "initial";
+  if (isDarkThemeEnabled) {
+    color = "rgba(0, 0, 0, 0.8)";
+  }
+
   return (
-    <>
+    <Box sx={{ bgcolor: color, paddingBottom: "1rem", minHeight: "100vh" }}>
       <PopUpAlert />
       <Header />
       <Routes>
@@ -48,7 +55,7 @@ function App() {
         {!isAuthenticated && <Route path="/" element={<Navigate replace to="/auth" />} />}
         <Route path="/auth" element={<Auth />} />
       </Routes>
-    </>
+    </Box>
   );
 }
 

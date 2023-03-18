@@ -23,23 +23,11 @@ const LABELS = [
   "Dec",
 ];
 
-const barOptions = {
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: "Your Monthly Expenses",
-    },
-  },
-};
-
 const BarChart = (props) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [monthlyExpenses, setMonthlyExpenses] = useState([]);
 
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
   const expenses = useSelector((state) => state.expenses.expenses);
 
   useEffect(() => {
@@ -62,19 +50,43 @@ const BarChart = (props) => {
     props.onYearChange(e.target.value);
   }
 
+  let bgColor = "initial";
+  let textColor = "initial";
+  if (isDarkThemeEnabled) {
+    bgColor = "rgba(0, 0, 0, 0.5)";
+    textColor = "white";
+  }
+
   const barData = {
     labels: LABELS,
     datasets: [
       {
         label: "Expense Amount",
         data: monthlyExpenses,
-        backgroundColor: "rgb(0, 0, 255, 0.7)",
+        backgroundColor: "rgb(0, 0, 255, 1)",
         barThickness: 15,
         borderWidth: 1,
         borderColor: "grey",
         hoverBackgroundColor: "red",
       },
     ],
+  };
+
+  const barOptions = {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Your Monthly Expenses",
+        color: textColor,
+      },
+    },
+
+    scales: {
+      x: { ticks: { color: "red" }, grid: { color: "lightgrey" } },
+      y: { ticks: { color: "lime" }, grid: { color: "lightgrey" } },
+    },
   };
 
   return (
@@ -85,6 +97,8 @@ const BarChart = (props) => {
           boxShadow: "0 0 15px grey",
           p: "1rem",
           height: "18rem",
+          bgcolor: bgColor,
+          color: textColor,
         }}
       >
         <Box height="13rem">
@@ -92,12 +106,15 @@ const BarChart = (props) => {
         </Box>
         <Box display="flex" justifyContent="center">
           <FormControl sx={{ mt: "0.8rem", minWidth: 200 }} size="small">
-            <InputLabel id="filter-by-year">Filter by Year</InputLabel>
+            <InputLabel id="filter-by-year" sx={{ color: "purple" }}>
+              Filter by Year
+            </InputLabel>
             <Select
               id="filter-by-year"
               label="Filter by Year"
               value={year}
               onChange={handleYearChange}
+              sx={{ color: textColor }}
             >
               <MenuItem value={2023}>2023</MenuItem>
               <MenuItem value={2022}>2022</MenuItem>

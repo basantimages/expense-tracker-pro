@@ -15,10 +15,19 @@ import { useSelector } from "react-redux";
 
 const AddedExpenses = () => {
   const expenses = useSelector((state) => state.expenses.expenses);
+  const isDarkThemeEnabled = useSelector((state) => state.theme.isDarkThemeEnabled);
+
   const expenseArray = [];
 
   for (const key in expenses) {
     expenseArray.push(expenses[key]);
+  }
+
+  let bgColor = "initial";
+  let textColor = "initial";
+  if (isDarkThemeEnabled) {
+    bgColor = "rgba(0, 0, 0, 0.5)";
+    textColor = "white";
   }
 
   return (
@@ -29,11 +38,12 @@ const AddedExpenses = () => {
             borderRadius: "20px",
             boxShadow: "0 0 15px grey",
             p: "1rem",
+            bgcolor: bgColor,
           }}
         >
           <TableContainer>
             <Table>
-              <TableHead sx={{ th: { fontWeight: "bold", bgcolor: "#F5F5F5" } }}>
+              <TableHead sx={{ th: { fontWeight: "bold", color: textColor } }}>
                 <TableRow>
                   <TableCell>Expense Description</TableCell>
                   <TableCell>Expense Amount</TableCell>

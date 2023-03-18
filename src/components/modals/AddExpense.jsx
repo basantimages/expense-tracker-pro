@@ -91,9 +91,13 @@ const AddExpense = () => {
       <Dialog
         open={showAddExpense}
         onClose={onCloseHandler}
-        maxWidth="md"
+        maxWidth="sm"
         PaperProps={{
-          style: { borderRadius: "20px" },
+          style: {
+            borderRadius: "20px",
+            backgroundColor: "rgb(255, 255, 255, 0.9)",
+            boxShadow: "0 0 50px white",
+          },
         }}
       >
         <DialogTitle>
