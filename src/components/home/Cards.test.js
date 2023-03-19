@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Cards from "./Cards";
 
 describe("Testing Cards jsx", () => {
@@ -51,5 +52,33 @@ describe("Testing Cards jsx", () => {
     render(<Cards />);
     const linkElement = screen.getByText("Download sheet", { exact: true });
     expect(linkElement).toBeInTheDocument();
+  });
+  test("Test 11", () => {
+    render(<Cards />);
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+    const linkElement = screen.getByText("ADD EXPENSE", { exact: true });
+    expect(linkElement).toBeInTheDocument();
+  });
+  test("Test 12", () => {
+    render(<Cards />);
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+    const linkElement = screen.getByText("ADD EXPENSE", { exact: true });
+    expect(linkElement).not.toBeInTheDocument();
+  });
+  test("Test 13", () => {
+    render(<Cards />);
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+    const linkElement = screen.getByText("ADD EXPENSE", { exact: false });
+    expect(linkElement).toBeInTheDocument();
+  });
+  test("Test 14", () => {
+    render(<Cards />);
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+    const linkElement = screen.getByText("ADD EXPENSE", { exact: false });
+    expect(linkElement).not.toBeInTheDocument();
   });
 });
