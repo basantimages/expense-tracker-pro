@@ -81,4 +81,11 @@ describe("Testing Cards jsx", () => {
     const linkElement = screen.getByText("ADD EXPENSE", { exact: false });
     expect(linkElement).not.toBeInTheDocument();
   });
+  test("Test 15", () => {
+    render(<Cards />);
+    const button = screen.getByRole("button");
+    userEvent.click(button);
+    const linkElement = screen.getByText("ADD EXPENSE", { exact: false });
+    expect(linkElement).not.toBeInTheDocument();
+  });
 });
